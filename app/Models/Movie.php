@@ -23,6 +23,7 @@ class Movie extends Model
      * 欄位型態轉換
      */
     protected $casts = [
+        'release_year' => 'integer',
         'rating' => 'float',
     ];
 }
