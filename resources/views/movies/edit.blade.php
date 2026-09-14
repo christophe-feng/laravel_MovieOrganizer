@@ -30,7 +30,7 @@
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">上映年份 <span class="text-red-500">*</span></label>
-                <input type="number" name="release_year" value="{{ old('release_year', $movie->release_year) }}" min="1900" max="2100" 
+                <input type="number" name="release_year" value="{{ old('release_year', $movie->release_year) }}" 
                        class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 @error('release_year') border-red-500 @else border-gray-300 @enderror">
                 @error('release_year')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
