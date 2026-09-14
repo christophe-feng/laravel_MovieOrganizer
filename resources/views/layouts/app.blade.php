@@ -12,9 +12,7 @@
     <nav class="bg-white shadow-sm border-b border-gray-200">
         <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
             <a href="{{ route('movies.index') }}" class="text-xl font-bold text-indigo-600">🎬 電影管理系統</a>
-            <a href="{{ route('movies.create') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
-                + 新增電影
-            </a>
+            @yield('create_movies')
         </div>
     </nav>
 
