@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('create_movies')
-    <a href="{{ route('movies.create') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+    <a href="{{ route('movies.create') }}"
+        class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
         + 新增電影
     </a>
 @endsection
@@ -11,6 +12,45 @@
         <h1 class="text-2xl font-bold text-gray-800">電影清單</h1>
     </div>
 
+    <!-- 搜尋與篩選表單區塊 -->
+    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-6">
+        <form action="{{ route('movies.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-12 gap-3">
+            <!-- 關鍵字搜尋 -->
+            <div class="md:col-span-6">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="搜尋片名或導演..."
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+
+            <!-- 類型下拉選單 -->
+            <div class="md:col-span-3">
+                <select name="genre"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
+                    <option value="">所有類型</option>
+                    @foreach ($genres as $genre)
+                        <option value="{{ $genre }}" {{ request('genre') === $genre ? 'selected' : '' }}>
+                            {{ $genre }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!-- 送出與清除按鈕 -->
+            <div class="md:col-span-3 flex gap-2">
+                <button type="submit"
+                    class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2 px-4 rounded-lg transition">
+                    搜尋
+                </button>
+                @if (request()->hasAny(['search', 'genre']))
+                    <a href="{{ route('movies.index') }}"
+                        class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 text-sm font-medium rounded-lg transition flex items-center justify-center">
+                        清除
+                    </a>
+                @endif
+            </div>
+        </form>
+    </div>
+
+    <!-- 電影清單卡片區 -->
     @if ($movies->isEmpty())
         <div class="bg-white p-8 rounded-xl shadow-sm text-center text-gray-500">
             目前還沒有任何電影資料，點擊右上角「+ 新增電影」開始建立！

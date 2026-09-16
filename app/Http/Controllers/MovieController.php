@@ -12,13 +12,34 @@ class MovieController extends Controller
     /**
      * 列表頁：讀取電影清單並依最新建立時間分頁
      */
-    public function index()
-    {
-        // 每頁顯示 6 筆，並依建立時間降冪排序
-        $movies = Movie::latest()->paginate(6);
+    public function index(Request $request)
+{
+    // 1. 取得所有不重複的類型供下拉選單使用
+    $genres = Movie::whereNotNull('genre')
+        ->distinct()
+        ->pluck('genre');
 
-        return view('movies.index', compact('movies'));
-    }
+    // 2. 建立查詢 Builder
+    $movies = Movie::query()
+        // 關鍵字搜尋（片名或導演）
+        ->when($request->filled('search'), function ($query) use ($request) {
+            $keyword = '%' . trim($request->input('search')) . '%';
+            $query->where(function ($q) use ($keyword) {
+                $q->where('title', 'like', $keyword)
+                  ->orWhere('director', 'like', $keyword);
+            });
+        })
+        // 類型篩選
+        ->when($request->filled('genre'), function ($query) use ($request) {
+            $query->where('genre', $request->input('genre'));
+        })
+        ->latest()
+        // withQueryString() 確保換頁時保留 URL 上的搜尋參數（例如 ?search=...&page=2）
+        ->paginate(6)
+        ->withQueryString();
+
+    return view('movies.index', compact('movies', 'genres'));
+}
 
     /**
      * 表單頁：顯示新增電影的頁面
