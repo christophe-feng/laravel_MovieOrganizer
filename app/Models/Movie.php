@@ -13,7 +13,7 @@ class Movie extends Model
         'title',
         'director',
         'release_year',
-        'genre',
+        'genre_id',       // 改為外鍵 ID
         'rating',
         'description',
         'poster_path',
