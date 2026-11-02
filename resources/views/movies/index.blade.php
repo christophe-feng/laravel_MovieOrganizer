@@ -23,12 +23,12 @@
 
             <!-- 類型下拉選單 -->
             <div class="md:col-span-3">
-                <select name="genre"
+                <select name="genre_id"
                     class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
                     <option value="">所有類型</option>
                     @foreach ($genres as $genre)
-                        <option value="{{ $genre }}" {{ request('genre') === $genre ? 'selected' : '' }}>
-                            {{ $genre }}
+                        <option value="{{ $genre->id }}" {{ request('genre_id') == $genre->id ? 'selected' : '' }}>
+                            {{ $genre->name }}
                         </option>
                     @endforeach
                 </select>
@@ -74,9 +74,11 @@
                         <div>
                             <div class="flex items-center justify-between mb-2">
                                 <span
-                                    class="text-xs font-semibold px-2.5 py-0.5 rounded bg-indigo-50 text-indigo-600">{{ $movie->genre }}</span>
+                                    class="text-xs font-semibold px-2.5 py-0.5 rounded bg-indigo-50 text-indigo-600">{{ $movie->genre?->name ?? '未分類' }}
+                                </span>
                                 <span class="text-xs font-semibold px-2 py-0.5 rounded bg-amber-50 text-amber-600">⭐
-                                    {{ number_format($movie->rating, 1) }}</span>
+                                    {{ number_format($movie->rating, 1) }}
+                                </span>
                             </div>
                             <h2 class="text-lg font-bold text-gray-900 mb-1">{{ $movie->title }}</h2>
                             <p class="text-xs text-gray-500 mb-3">年份：{{ $movie->release_year }} ｜
