@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Movie;
+use App\Models\Genre;
 use Illuminate\Http\Request;
 // 用Storage就能處理各類型的檔案儲存
 use Illuminate\Support\Facades\Storage;
@@ -13,40 +14,41 @@ class MovieController extends Controller
      * 列表頁：讀取電影清單並依最新建立時間分頁
      */
     public function index(Request $request)
-{
-    // 1. 取得所有不重複的類型供下拉選單使用
-    $genres = Movie::whereNotNull('genre')
-        ->distinct()
-        ->pluck('genre');
+    {
+        // 1. 取得所有不重複的類型供下拉選單使用
+        $genres = Genre::all();
 
-    // 2. 建立查詢 Builder
-    $movies = Movie::query()
-        // 關鍵字搜尋（片名或導演）
-        ->when($request->filled('search'), function ($query) use ($request) {
-            $keyword = '%' . trim($request->input('search')) . '%';
-            $query->where(function ($q) use ($keyword) {
-                $q->where('title', 'like', $keyword)
-                  ->orWhere('director', 'like', $keyword);
-            });
-        })
-        // 類型篩選
-        ->when($request->filled('genre'), function ($query) use ($request) {
-            $query->where('genre', $request->input('genre'));
-        })
-        ->latest()
-        // withQueryString() 確保換頁時保留 URL 上的搜尋參數（例如 ?search=...&page=2）
-        ->paginate(6)
-        ->withQueryString();
+        // 2. 建立查詢 Builder
+        $movies = Movie::query()
+            // 預先加載關聯資料
+            ->with('genre')
+            // 關鍵字搜尋（片名或導演）
+            ->when($request->filled('search'), function ($query) use ($request) {
+                $keyword = '%' . trim($request->input('search')) . '%';
+                $query->where(function ($q) use ($keyword) {
+                    $q->where('title', 'like', $keyword)
+                        ->orWhere('director', 'like', $keyword);
+                });
+            })
+            // 類型篩選
+            ->when($request->filled('genre_id'), function ($query) use ($request) {
+                $query->where('genre_id', $request->input('genre_id'));
+            })
+            ->latest()
+            // withQueryString() 確保換頁時保留 URL 上的搜尋參數（例如 ?search=...&page=2）
+            ->paginate(6)
+            ->withQueryString();
 
-    return view('movies.index', compact('movies', 'genres'));
-}
+        return view('movies.index', compact('movies', 'genres'));
+    }
 
     /**
      * 表單頁：顯示新增電影的頁面
      */
     public function create()
     {
-        return view('movies.create');
+        $genres = Genre::all();
+        return view('movies.create', compact('genres'));
     }
 
     /**
@@ -59,7 +61,7 @@ class MovieController extends Controller
             'title'        => 'required|string|max:255',
             'director'     => 'nullable|string|max:255',
             'release_year' => 'required|integer|min:1895|max:' . (date('Y') + 3),
-            'genre'        => 'nullable|string|max:100',
+            'genre_id'     => 'nullable|exists:genres,id', // 驗證 ID 是否存在於 genres 表
             'rating'       => 'nullable|numeric|min:0|max:10',
             'description'  => 'nullable|string',
             'poster'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // 最大 2MB
@@ -100,7 +102,8 @@ class MovieController extends Controller
      */
     public function edit(Movie $movie)
     {
-        return view('movies.edit', compact('movie'));
+        $genres = Genre::all();
+        return view('movies.edit', compact('movie', 'genres'));
     }
 
     /**
@@ -113,7 +116,7 @@ class MovieController extends Controller
             'title'        => 'required|string|max:255',
             'director'     => 'nullable|string|max:255',
             'release_year' => 'required|integer|min:1895|max:' . (date('Y') + 3),
-            'genre'        => 'nullable|string|max:100',
+            'genre_id'     => 'nullable|exists:genre,id',
             'rating'       => 'nullable|numeric|min:0|max:10',
             'description'  => 'nullable|string',
             'poster'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // 最大 2MB
