@@ -12,6 +12,8 @@
     <nav class="bg-white shadow-sm border-b border-gray-200">
         <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
             <a href="{{ route('movies.index') }}" class="text-xl font-bold text-indigo-600">🎬 電影管理系統</a>
+            <a href="{{ route('movies.index') }}" class="text-sm font-medium {{ request()->routeIs('movies.*') ? 'text-indigo-600' : 'text-gray-500 hover:text-gray-700' }}">電影清單</a>
+            <a href="{{ route('genres.index') }}" class="text-sm font-medium {{ request()->routeIs('genres.*') ? 'text-indigo-600' : 'text-gray-500 hover:text-gray-700' }}">分類管理</a>
             @yield('create_movies')
         </div>
     </nav>
