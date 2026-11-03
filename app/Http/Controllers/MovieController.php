@@ -116,7 +116,7 @@ class MovieController extends Controller
             'title'        => 'required|string|max:255',
             'director'     => 'nullable|string|max:255',
             'release_year' => 'required|integer|min:1895|max:' . (date('Y') + 3),
-            'genre_id'     => 'nullable|exists:genre,id',
+            'genre_id'     => 'nullable|exists:genres,id',
             'rating'       => 'nullable|numeric|min:0|max:10',
             'description'  => 'nullable|string',
             'poster'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // 最大 2MB

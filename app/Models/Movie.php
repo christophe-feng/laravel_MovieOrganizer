@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Movie extends Model
 {
@@ -26,4 +28,12 @@ class Movie extends Model
         'release_year' => 'integer',
         'rating' => 'float',
     ];
+
+    /**
+     * 每部電影屬於一個分類 (Inverse of One-to-Many)
+     */
+    public function genre(): BelongsTo
+    {
+        return $this->belongsTo(Genre::class);
+    }
 }

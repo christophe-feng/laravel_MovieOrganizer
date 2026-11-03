@@ -40,7 +40,7 @@
                     class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2 px-4 rounded-lg transition">
                     搜尋
                 </button>
-                @if (request()->hasAny(['search', 'genre']))
+                @if (request()->hasAny(['search', 'genre_id']))
                     <a href="{{ route('movies.index') }}"
                         class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 text-sm font-medium rounded-lg transition flex items-center justify-center">
                         清除
