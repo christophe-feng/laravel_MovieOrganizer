@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('create_movies')
+{{-- @section('create_movies')
     <a href="{{ route('movies.create') }}"
         class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
         + 新增電影
     </a>
-@endsection
+@endsection --}}
 
 @section('content')
     <div class="flex justify-between items-center mb-6">
@@ -87,17 +87,18 @@
                         </div>
 
                         <!-- 操作按鈕 -->
-                        <div class="pt-4 border-t border-gray-100 flex items-center justify-end space-x-3 text-sm">
-                            <a href="{{ route('movies.edit', $movie) }}"
-                                class="text-blue-600 hover:text-blue-800 font-medium">編輯</a>
-                            {{-- onsubmit 是在表單送出前觸發的事件 --}}
-                            <form action="{{ route('movies.destroy', $movie) }}" method="POST"
-                                onsubmit="return confirm('確定要刪除這部電影嗎？');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-800 font-medium">刪除</button>
-                            </form>
-                        </div>
+                        @auth
+                            <div class="pt-4 border-t border-gray-100 flex items-center justify-end space-x-3 text-sm">
+                                <a href="{{ route('movies.edit', $movie) }}"
+                                    class="text-blue-600 hover:text-blue-800 font-medium">編輯</a>
+                                <form action="{{ route('movies.destroy', $movie) }}" method="POST"
+                                    onsubmit="return confirm('確定要刪除這部電影嗎？');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-600 hover:text-red-800 font-medium">刪除</button>
+                                </form>
+                            </div>
+                        @endauth
                     </div>
                 </div>
             @endforeach
