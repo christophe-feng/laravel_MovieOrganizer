@@ -1,30 +1,32 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
+    <div class="mb-6 text-center">
+        <h2 class="text-xl font-bold text-gray-800">請驗證您的電子郵件</h2>
+        <p class="text-xs text-gray-600 mt-2 leading-relaxed text-left">
+            感謝您的註冊！在開始之前，我們已發送一封驗證信至您的信箱，請點擊信中的驗證連結以啟用帳號。<br><br>
+            如果您沒有收到郵件，可以點擊下方按鈕重新發送。
+        </p>
     </div>
 
     @if (session('status') == 'verification-link-sent')
-        <div class="mb-4 font-medium text-sm text-green-600">
-            {{ __('A new verification link has been sent to the email address you provided during registration.') }}
+        <div class="mb-4 p-3 bg-green-50 border border-green-200 text-green-700 rounded-lg text-xs">
+            新的驗證連結已成功發送至您註冊時填寫的電子郵件信箱。
         </div>
     @endif
 
-    <div class="mt-4 flex items-center justify-between">
+    <div class="space-y-3">
+        <!-- 重新發送按鈕 -->
         <form method="POST" action="{{ route('verification.send') }}">
             @csrf
-
-            <div>
-                <x-primary-button>
-                    {{ __('Resend Verification Email') }}
-                </x-primary-button>
-            </div>
+            <button type="submit" class="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg text-sm transition shadow-sm">
+                重新發送驗證信
+            </button>
         </form>
 
-        <form method="POST" action="{{ route('logout') }}">
+        <!-- 登出按鈕 -->
+        <form method="POST" action="{{ route('logout') }}" class="text-center">
             @csrf
-
-            <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                {{ __('Log Out') }}
+            <button type="submit" class="text-xs text-gray-500 hover:text-red-600 font-medium transition">
+                登出帳號
             </button>
         </form>
     </div>
