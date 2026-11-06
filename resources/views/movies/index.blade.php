@@ -1,15 +1,13 @@
 @extends('layouts.app')
 
-{{-- @section('create_movies')
-    <a href="{{ route('movies.create') }}"
-        class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
-        + 新增電影
-    </a>
-@endsection --}}
-
 @section('content')
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-gray-800">電影清單</h1>
+        @auth
+        <a href="{{ route('movies.create') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-1 shadow-sm">
+            <span>+ 新增電影</span>
+        </a>
+        @endauth
     </div>
 
     <!-- 搜尋與篩選表單區塊 -->

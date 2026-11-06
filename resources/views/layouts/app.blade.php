@@ -24,10 +24,7 @@
             <!-- 右側操作與認證區 -->
             <div class="flex items-center space-x-4">
                 @auth
-                    <!-- 登入後顯示：新增按鈕與會員登出 -->
-                    <a href="{{ route('movies.create') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3.5 py-1.5 rounded-lg text-sm font-medium transition">
-                        + 新增電影
-                    </a>
+                    <!-- 登入後顯示：會員名稱與會員登出 -->                    
                     <span class="text-sm text-gray-600 font-medium">{{ Auth::user()->name }}</span>
                     <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
