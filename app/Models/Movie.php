@@ -36,4 +36,21 @@ class Movie extends Model
     {
         return $this->belongsTo(Genre::class);
     }
+
+    public function getPosterUrlAttribute()
+    {
+        if (!$this->poster_path) {
+            return null;
+        }
+
+        $baseUrl = request()->getSchemeAndHttpHost();
+
+        // 1. 優先檢查是否為放在 public/images/ 裡的預設展示圖
+        if (file_exists(public_path($this->poster_path))) {
+            return $baseUrl . '/' . ltrim($this->poster_path, '/');
+        }
+
+        // 2. 否則讀取透過網頁表單動態上傳到 storage 的圖片
+        return $baseUrl . '/storage/' . ltrim($this->poster_path, '/');
+    }
 }

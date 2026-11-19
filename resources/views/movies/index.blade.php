@@ -4,9 +4,10 @@
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-gray-800">電影清單</h1>
         @auth
-        <a href="{{ route('movies.create') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-1 shadow-sm">
-            <span>+ 新增電影</span>
-        </a>
+            <a href="{{ route('movies.create') }}"
+                class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-1 shadow-sm">
+                <span>+ 新增電影</span>
+            </a>
         @endauth
     </div>
 
@@ -59,11 +60,11 @@
                 <div class="bg-white rounded-xl shadow-sm overflow-hidden flex flex-col border border-gray-100">
                     <!-- 海報展示區 -->
                     <div class="h-48 bg-gray-200 overflow-hidden flex items-center justify-center">
-                        @if ($movie->poster_path)
-                            <img src="{{ asset('storage/' . $movie->poster_path) }}" alt="{{ $movie->title }}"
+                        @if ($movie->poster_url)
+                            <img src="{{ $movie->poster_url }}" alt="{{ $movie->title }}"
                                 class="w-full h-full object-cover">
                         @else
-                            <span class="text-gray-400 text-sm">無海報圖片</span>
+                            <span class="text-gray-400">無海報圖片</span>
                         @endif
                     </div>
 

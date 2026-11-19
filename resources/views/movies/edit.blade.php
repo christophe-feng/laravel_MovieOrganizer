@@ -75,9 +75,9 @@
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">電影海報</label>
 
-                @if ($movie->poster_path)
+                @if ($movie->poster_url)
                     <div class="mb-3 flex items-center gap-4 p-3 bg-gray-50 border border-gray-200 rounded-lg">
-                        <img src="{{ asset('storage/' . $movie->poster_path) }}" alt="{{ $movie->title }}"
+                        <img src="{{ $movie->poster_url }}" alt="{{ $movie->title }}"
                             class="w-16 h-20 object-cover rounded shadow-sm">
                         <span class="text-xs text-gray-500">目前已有上傳海報。若要更換，請於下方選擇新圖檔；若不更換請留空。</span>
                     </div>
